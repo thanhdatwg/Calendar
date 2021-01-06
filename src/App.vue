@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 .stylemain {
-  background-image: url("./assets/924.jpg");
+  background-image: url("./assets/1076.jpg");
   background-size: cover;
 }
 </style>

@@ -1,55 +1,66 @@
 <template>
   <div>
     <v-row class="mt-10" style="opacity: 0.85">
-      <v-col cols="2" class="ml-10">
-        <v-row no-gutters>
-          <v-col cols="12">
-            <v-card
-              class="mx-auto"
-              max-width="344"
-              style="background-color: rgba(18 115 214 / 27%); border-color: rgba(97, 92, 92, 0.27);"
+      <v-col cols="12" class="mt-n5">
+        <flip-countdown deadline="2022-1-1 00:00:00"></flip-countdown>
+      </v-col>
+      <v-col cols="12" class="mt-n4">
+        <v-card
+          class="mx-auto"
+          max-width="344"
+          style="background-color: rgba(18 115 214 / 27%); border-color: rgba(97, 92, 92, 0.27);"
+        >
+          <v-row>
+            <v-col
+              cols="12"
+              class="d-flex align-end justify-center"
+              style="padding-top: 13px"
             >
-              <v-row>
-                <v-col
-                  cols="12"
-                  class="d-flex align-end justify-center"
-                  style="padding-top: 13px"
-                >
-                  <v-icon size="3.75rem" color="white"
-                    >mdi-weather-partly-cloudy</v-icon
-                  >
-                  <div class="text-h3 ml-3 font-weight-bold white--text">
-                    {{ temp }}&deg;C
-                  </div>
-                </v-col>
-                <v-col
-                  cols="12"
-                  align="center"
-                  class="pt-0 text-subtitle-1 white--text"
-                  >{{ today }}</v-col
-                >
-                <v-col
-                  cols="12"
-                  align="center"
-                  class="pt-0 text-h4 font-weight-bold white--text"
-                  >{{ now }}</v-col
-                >
-              </v-row>
-            </v-card>
-          </v-col>
-          <v-col cols="12" class="mt-4">
-            <v-card
-              style="background-color: rgba(18 115 214 / 27%); border-color: rgba(97, 92, 92, 0.27);"
+              <v-icon size="3.75rem" color="white"
+                >mdi-weather-partly-cloudy</v-icon
+              >
+              <div class="text-h3 ml-3 font-weight-bold white--text">
+                {{ temp }}&deg;C
+              </div>
+            </v-col>
+            <v-col
+              cols="12"
+              align="center"
+              class="pt-0 text-subtitle-1 white--text"
+              >{{ today }}</v-col
             >
-              <v-card-text>
-                <flip-countdown deadline="2022-1-1 00:00:00"></flip-countdown>
-              </v-card-text>
-            </v-card>
+            <v-col
+              cols="12"
+              align="center"
+              class="pt-0 text-h4 font-weight-bold white--text"
+              >{{ now }}</v-col
+            >
+          </v-row>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" class="d-flex">
+        <v-row class="justify-center">
+          <v-col cols="3" class="d-flex">
+            <v-text-field
+              v-model="city"
+              label="City"
+              solo
+              class="mr-1"
+            ></v-text-field>
+            <v-btn
+              depressed
+              color="primary"
+              height="62%"
+              @click="getInfoWeather"
+            >
+              Search
+            </v-btn>
           </v-col>
         </v-row>
       </v-col>
-      <v-spacer></v-spacer>
-      <v-col class="mr-10" cols="9">
+
+      <!-- <v-col class="mr-10" cols="9">
         <v-sheet height="64">
           <v-toolbar flat>
             <v-btn
@@ -100,10 +111,10 @@
             @click:date="clickday($event)"
           ></v-calendar>
         </v-sheet>
-      </v-col>
+      </v-col> -->
     </v-row>
 
-    <v-dialog v-model="dialog" width="500">
+    <!-- <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2 d-flex justify-center">
           Information
@@ -121,7 +132,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 
@@ -134,6 +145,7 @@ export default {
   components: { FlipCountdown },
 
   data: () => ({
+    city: "hanoi",
     focus: "",
     infomationDate: {},
     type: "month",
@@ -152,7 +164,7 @@ export default {
     temp: null,
   }),
   mounted() {
-    this.$refs.calendar.checkChange();
+    // this.$refs.calendar.checkChange();
     this.getInfoWeather();
     this.weatherInterval = setInterval(() => {
       this.getInfoWeather();
@@ -166,7 +178,9 @@ export default {
     getInfoWeather() {
       axios
         .get(
-          "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3265874a2c77ae4a04bb96236a642d2f"
+          "https://api.openweathermap.org/data/2.5/weather?q=" +
+            this.city +
+            "&appid=3265874a2c77ae4a04bb96236a642d2f"
         )
         .then((response) => {
           console.log(response.data);
